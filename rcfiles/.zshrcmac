@@ -1,31 +1,6 @@
-# =============================================================
-# Pete's .zshrc file
-# =============================================================
-#
-# Environment vars
-
-export S="~/scripts"
-export D="~/Downloads"
-export DT="~/Desktop"
-export G="~/gitrepo"
-
-export EDITOR=vim
-export HISTCONTROL=ignoreboth
-
-# alias scripts
-
-ssh() {
-  $s/colorssh.sh $*  
-}
-
-weather() { curl wttr.in }
-
-alias mv='mv -i'
-alias rm='rm -i'
-
-
-neofetch 
-PS1='%n@%m %/ $ '
+# .zshrcmac
+# created 2022-10-08
+#########################################################################
 
 # nvm shit
 export NVM_DIR="$HOME/.nvm"
@@ -50,7 +25,7 @@ echo "proxy is off"
 proxy_on() {
 export HTTP_PROXY=http://a-proxy-p.bc.jsplc.net:8080
 export HTTPS_PROXY=http://a-proxy-p.bc.jsplc.net:8080
-export 
+export
 NO_PROXY=localhost,127.0.0.1,.dev,.internal,.local,.jsplc.net,.jstest1.net,.jstest2.net,.jstest3.net,.devjsplc.net,.jhblkf.jsgrp,.blk.js.com,.ishapay.net,.iphapay.net,.client.secure-payment-processing.com,.client.test-secure-payment-processing.com
 # Some tools want the variables in lowercase
 export http_proxy=$HTTP_PROXY
