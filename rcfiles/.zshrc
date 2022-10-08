@@ -16,6 +16,7 @@ export S=~/scripts
 export D=~/Downloads
 export DT=~/Desktop
 export G=~/gitrepo
+export L=~/logs
 
 export EDITOR=vim
 export HISTCONTROL=ignoreboth
@@ -23,7 +24,7 @@ export HISTCONTROL=ignoreboth
 # alias scripts
 alias mv='mv -i'
 alias rm='rm -i'
-alias ls='ls -lrtA'
+alias ls='ls -lrt'
 
 wttr() { curl wttr.in/Lincoln,+United+Kingdom }
 
@@ -46,11 +47,11 @@ _comp_options+=(globdots)
 host=`hostname`
 case $host in
 'homeArch')
-	PS1='%B%n%b@%F{12}%m%f %~ %(!.#.$)'
+	PS1='%B%n%b@%F{12}%m%f %~ %(!.#.$) '
 	neofetch
 	;;
 *)
-	PS1='%B%n%b@%F{124}%m%f %~ %(!.#.$)'
+	PS1='%B%n%b@%F{124}%m%f %~ %(!.#.$) '
 	echo "unrecognised host: $host"
 	;;
 esac
