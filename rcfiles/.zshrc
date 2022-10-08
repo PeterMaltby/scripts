@@ -1,5 +1,5 @@
 # .zshrc
-# created: 2022-10-08
+# created: 08-10-2022
 ###################################################################
 #	 ______  _____  _    _  _____    _____ 
 #	|___  / / ____|| |  | ||  __ \  / ____|
@@ -25,6 +25,8 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ls='ls -lrtA'
 
+wttr() { curl wttr.in/Lincoln,+United+Kingdom }
+
 # ZSH config
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -35,22 +37,25 @@ bindkey -v
 # not sure what this does
 # zstyle :compinstall filename '/home/peterm/.zshrc'
 
-# autoload -Uz compinit
-# compinit
-# autoload -Uz promptinit
+# autocomplete
+autoload -Uz compinit
+compinit
+# autocomplete hidden files
+_comp_options+=(globdots)
 
-
-PROMPT='%n@%F{27}%M%f %~ %# '
-#RPROMPT='[%F{13}%?%f]'
-PS1='%n@%m %/ $ '
-
-
-neofetch
+host=`hostname`
+case $host in
+'homeArch')
+	PS1='%B%n%b@%F{12}%m%f %~ %(!.#.$)'
+	neofetch
+	;;
+*)
+	PS1='%B%n%b@%F{124}%m%f %~ %(!.#.$)'
+	echo "unrecognised host: $host"
+	;;
+esac
 
 # sort this bit
 ssh() {
   $S/colorssh.sh $*
 }
-
-weather() { curl wttr.in }
-

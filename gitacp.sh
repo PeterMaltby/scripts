@@ -6,6 +6,8 @@ timestamp=$(date +%s)
 
 cd ${gitRepoDir}
 
+git pull
+
 git status
 
 git add *
