@@ -11,22 +11,23 @@ timeStamp=`date "+%H%M"`
 scriptNameFull=${0##*/}
 scriptName=`echo ${0##*/} | cut -d. -f1`
 
-baseDir=~/PABLO
+PABLODir=~/PABLO
+baseDir="${PABLODir}/${scriptName}"
 logsDir="${baseDir}/logs"
 runFlagsDir="${baseDir}/flags"
+tmpDir="${baseDir}/tmp"
+
+masterLog="${PABLODir}/PABLO_MASTER_${dateStamp}.log"
+
+logRetention=30
 
 mkdir -p ${logsDir}
 mkdir -p ${runFlagsDir}
-
-
-logFile="${logsDir}/${scriptName}_${dateStamp}.log"
-masterLog="${logsDir}/PABLO_MASTER_${dateStamp}.log"
-
-# params
-
+mkdir -p ${tmpDir}
 
 pStart () {
 
+	logFile="${logsDir}/${scriptName}_${dateStamp}.log"
 	runFlagFile="${runFlagsDir}/${scriptName}.txt"
 
 	checkRegex="^[0-9a-zA-Z_]*\.sh$"
@@ -42,6 +43,7 @@ pStart () {
 		exit 1
 	fi
 
+	find ${logDir} -type f -mtime +${logRetention} -exec rm -f {}
 
 	touch ${runFlagFile}
 	echo $$ > ${runFlagFile}

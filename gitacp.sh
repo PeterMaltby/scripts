@@ -2,7 +2,11 @@
 
 source $S/PABLO.sh 
 
+pwdvar=${1}
+
 scriptName="${scriptName}:wiki"
+
+gitDirName=`echo ${scriptName} | cut -d/ -f-1`
 
 pStart
 pLog "$@"
