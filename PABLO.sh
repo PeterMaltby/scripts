@@ -15,13 +15,14 @@ baseDir=~/PABLO
 logsDir="${baseDir}/logs"
 runFlagsDir="${baseDir}/flags"
 
+mkdir -p ${logsDir}
+mkdir -p ${runFlagsDir}
+
 
 logFile="${logsDir}/${scriptName}_${dateStamp}.log"
 masterLog="${logsDir}/PABLO_MASTER_${dateStamp}.log"
 
 # params
-
-scriptNameOveride=0
 
 
 pStart () {
@@ -59,12 +60,8 @@ pLog () {
 pMasterLog () {
 	dateTime=`date "+%Y%m%d %H%M%S"`
 
-	if [ ${scriptName} == ${scriptNameTrue} ]; then
-		echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${masterLog}
-	else
-		echo "${dateTime} [${timeStamp} ${scriptNameTrue}:${scriptName}] ${1}" >> ${masterLog}
-	fi
-	pLog "${1}"
+	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${masterLog}
+	pLog "(MASTER) ${1}"
 }
 
 pError () {
@@ -81,7 +78,7 @@ pEnd () {
 	fi
 
 	finishTimeStamp=`date +%s`
-	totalExecTime=`expr $startTimeStamp - $finishTimeStamp`
+	totalExecTime=`expr $finishTimeStamp - $startTimeStamp`
 	
 	pLog "COMPLETED SUCCESSFULLY in ${totalExecTime} secs"
 }

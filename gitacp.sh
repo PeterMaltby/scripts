@@ -2,10 +2,11 @@
 
 source $S/PABLO.sh 
 
-scriptName="overide"
+scriptName="${scriptName}:wiki"
 
 pStart
-echo $@
+pLog "$@"
+pLog "input var = ${1}"
 
 cd ${gitRepoDir}
 
