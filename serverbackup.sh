@@ -1,9 +1,24 @@
 #!/bin/sh
-# PABLO.sh
-# created: 2022-10-08
+# serverBackup.sh
+# created: 2022-10-12
 ############################################################
 ############################################################
 
+source $S/PABLO.sh
+
+folderName=`echo $1 | awk -F/ '{print $NF}'`
+scriptName="${scriptName}:$folderName"
+
+pStart
+
+pLog "pinging servers"
+
+pEnd
+
+
+
+#PETERDEBUG
+exit 0
 # PABLO vars
 dateStamp=`date "+%Y%m%d"`
 timeStamp=`date "+%H%M"`
@@ -33,7 +48,7 @@ pStart () {
 	checkRegex="^[0-9a-zA-Z_]*\.sh$"
 
 	if [[ ! ${scriptNameFull} =~ ${checkRegex} ]]; then
-		pError "START failed: name invalid \"${scriptNameFull}\}"
+		pError "START failed: name invalid \"${scriptNameFull}\""
 		exit 1
 	fi
 
@@ -63,7 +78,7 @@ pMasterLog () {
 	dateTime=`date "+%Y%m%d %H%M%S"`
 
 	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${masterLog}
-	pLog "(MASTER) ${1}"
+	pLog '(MASTER) ${1}'
 }
 
 pError () {
