@@ -26,7 +26,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ls='ls -lrth --group-directories-first --color=auto'
 
-
 wttr() { curl wttr.in/Lincoln,+United+Kingdom }
 
 # ZSH config
@@ -51,6 +50,10 @@ case $host in
 	PS1='%B%n%b@%F{12}%m%f %~ %(!.#.$) '
 	neofetch
 	;;
+'HOLBMAC2259')
+	PS1='%B%n%b@%F{172}%m%f %~ %(!.#.$) '
+	neofetch
+	;;
 *)
 	PS1='%B%n%b@%F{124}%m%f %~ %(!.#.$) '
 	echo "unrecognised host: $host"
@@ -61,4 +64,3 @@ esac
 ssh() {
   $S/colorssh.sh $*
 }
-
