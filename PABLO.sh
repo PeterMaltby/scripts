@@ -43,7 +43,7 @@ pStart () {
 		exit 1
 	fi
 
-	find ${logDir} -type f -mtime +${logRetention} -exec rm -f {} \;
+	find ${logsDir} -type f -mtime +${logRetention} -exec rm -f {} \;
 
 	touch ${runFlagFile}
 	echo $$ > ${runFlagFile}

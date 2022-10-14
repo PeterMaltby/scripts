@@ -6,12 +6,42 @@
 
 source $S/PABLO.sh
 
+encryptCache=${tmpDir}/encCache
+
 folderName=`echo $1 | awk -F/ '{print $NF}'`
 scriptName="${scriptName}:$folderName"
 
 pStart
 
-pLog "pinging servers"
+pLog "moving to dir \"${1}\""
+
+pwdOutput=${1}
+
+pLog "pwd output: \"${pwdOutput}\""
+
+pLog "Syncing local encrypted cache"
+
+# openssl enc -ciphername
+
+# -in : input file will use stdin if not spec
+
+# -k password	-kfile file
+
+# -out file
+
+# -p 	prints salt key and IV
+
+# -S specify salt
+
+# -a base 64 procces the data
+
+# find . -not -path '*/.*'
+
+pLog "checking server availible : WIP"
+
+
+
+cd ${1}
 
 pEnd
 
@@ -45,7 +75,7 @@ pStart () {
 	logFile="${logsDir}/${scriptName}_${dateStamp}.log"
 	runFlagFile="${runFlagsDir}/${scriptName}.txt"
 
-	checkRegex="^[0-9a-zA-Z_]*\.sh$"
+	checkRegex="^[0-9a-zA-Z_]*\.sh$ "
 
 	if [[ ! ${scriptNameFull} =~ ${checkRegex} ]]; then
 		pError "START failed: name invalid \"${scriptNameFull}\""
