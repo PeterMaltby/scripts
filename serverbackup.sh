@@ -6,16 +6,22 @@
 
 source $S/PABLO.sh
 
+temp=${tmpDir}/tmp.tmp
 encryptCache=${tmpDir}/encCache
 
 folderName=`echo $1 | awk -F/ '{print $NF}'`
 scriptName="${scriptName}:$folderName"
+
+#change this in future
+tempPassword="fnjdhfjsdhjfdsgbfd"
 
 pStart
 
 pLog "moving to dir \"${1}\""
 
 pwdOutput=${1}
+
+cd ${pwdOutput}
 
 pLog "pwd output: \"${pwdOutput}\""
 
@@ -35,7 +41,16 @@ pLog "Syncing local encrypted cache"
 
 # -a base 64 procces the data
 
-# find . -not -path '*/.*'
+find . -type f -not -path '*/.*' > ${temp}
+
+while read fileToBackup
+do
+	echo ${fileToBackup}
+	echo ${fileToBackup} | openssl aes-256-cbc -pbkdf2 -a -salt -pass pass:${tempPassword}
+
+
+done < ${temp}
+
 
 pLog "checking server availible : WIP"
 

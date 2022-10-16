@@ -51,6 +51,7 @@ pStart () {
 	startTimeStamp=`date +%s`
 
 	pLog "STARTED with PID \"$$\""
+
 }
 
 pLog () {
