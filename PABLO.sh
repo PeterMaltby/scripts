@@ -84,4 +84,6 @@ pEnd () {
 	totalExecTime=`expr $finishTimeStamp - $startTimeStamp`
 	
 	pLog "COMPLETED SUCCESSFULLY in ${totalExecTime} secs"
+
+	exit 0
 }
