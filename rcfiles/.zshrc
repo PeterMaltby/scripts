@@ -59,8 +59,3 @@ case $host in
 	echo "unrecognised host: $host"
 	;;
 esac
-
-# sort this bit
-ssh() {
-  $S/colorssh.sh $*
-}
