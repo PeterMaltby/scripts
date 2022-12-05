@@ -6,20 +6,23 @@
 
 source $S/PABLO.sh
 
-temp=${tmpDir}/tmp.tmp
-encryptCache=${tmpDir}/encCache
+tmp=${tmpDir}/tmp.tmp
+fileList=${tmpDir}/fileList.txt
+encryptCacheDir=${tmpDir}/sync/encCache
+lastRunFiles=${tmpDir}/lastFileList.txt
+delList=${tmpDir}/sync/del.txt
 
 folderName=`echo $1 | awk -F/ '{print $NF}'`
 scriptName="${scriptName}:$folderName"
 
 #change this in future
-tempPassword="fnjdhfjsdhjfdsgbfd"
+encPass="fnjdhfjsdhjfdsgbfd"
 
 pStart
 
-# comment here !
-
 pLog "moving to dir \"${1}\""
+
+mkdir -p ${encryptCacheDir}
 
 pwdOutput=${1}
 
@@ -29,29 +32,49 @@ pLog "pwd output: \"${pwdOutput}\""
 
 pLog "Syncing local encrypted cache"
 
-# openssl enc -ciphername
+# find this comment
 
-# -in : input file will use stdin if not spec
+#this is a comment
+find . -type f -not -path '*/.*' > ${fileList}
 
-# -k password	-kfile file
+if [ -f ${lastRunFiles} ]; then
 
-# -out file
+	diff ${lastRunFiles} ${fileList} | grep '<' | cut -d' ' -f2 > ${tmp}
 
-# -p 	prints salt key and IV
+	cat ${tmp}
 
-# -S specify salt
+	while read fileToDel
+	do
+		echo "${fileToDel}" | openssl aes-256-cbc -pbkdf2 -salt -a -pass pass:${encPass} | sed 's|/|_|g' >> ${delList}
+	done < ${tmp}
 
-# -a base 64 procces the data
+	echo "del List"
+	cat ${delList}
+	
+fi
 
-find . -type f -not -path '*/.*' > ${temp}
+cp ${fileList} ${lastRunFiles}
+
+
+pEnd
+
+
 
 while read fileToBackup
 do
 	echo ${fileToBackup}
-	echo ${fileToBackup} | openssl aes-256-cbc -pbkdf2 -a -salt -pass pass:${tempPassword}
+	tempHash=`echo ${fileToBackup} | openssl aes-256-cbc -pbkdf2 -salt -a -pass pass:${tempPassword}`
+	tempHash=`echo "${tempHash}" | sed 's|/|_|g'`
+
+	echo "tempHash ${tempHash}.aes"
+
+	cp -p ${fileToBackup} ${encryptCache}/${tempHash}.aes
+	echo "cp -p ${fileToBackup} ${encryptCache}/${tempHash}.aes"
 
 
-done < ${temp}
+
+
+done < ${fileList}
 
 
 pLog "checking server availible : WIP"
@@ -61,88 +84,3 @@ pLog "checking server availible : WIP"
 cd ${1}
 
 pEnd
-
-
-
-#PETERDEBUG
-exit 0
-# PABLO vars
-dateStamp=`date "+%Y%m%d"`
-timeStamp=`date "+%H%M"`
-
-scriptNameFull=${0##*/}
-scriptName=`echo ${0##*/} | cut -d. -f1`
-
-PABLODir=~/PABLO
-baseDir="${PABLODir}/${scriptName}"
-logsDir="${baseDir}/logs"
-runFlagsDir="${baseDir}/flags"
-tmpDir="${baseDir}/tmp"
-
-masterLog="${PABLODir}/PABLO_MASTER_${dateStamp}.log"
-
-logRetention=30
-
-mkdir -p ${logsDir}
-mkdir -p ${runFlagsDir}
-mkdir -p ${tmpDir}
-
-pStart () {
-
-	logFile="${logsDir}/${scriptName}_${dateStamp}.log"
-	runFlagFile="${runFlagsDir}/${scriptName}.txt"
-
-	checkRegex="^[0-9a-zA-Z_]*\.sh$ "
-
-	if [[ ! ${scriptNameFull} =~ ${checkRegex} ]]; then
-		pError "START failed: name invalid \"${scriptNameFull}\""
-		exit 1
-	fi
-
-	if test -e ${runFlagFile}; then
-		PID=`cat ${runFlagFile}`
-		pError "START failed: already running with PID \"${PID}\""
-		exit 1
-	fi
-
-	find ${logDir} -type f -mtime +${logRetention} -exec rm -f {} \;
-
-	touch ${runFlagFile}
-	echo $$ > ${runFlagFile}
-
-	startTimeStamp=`date +%s`
-
-	pLog "STARTED with PID \"$$\""
-}
-
-pLog () {
-	dateTime=`date "+%Y%m%d %H%M%S"`
-
-	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${logFile}
-}
-
-pMasterLog () {
-	dateTime=`date "+%Y%m%d %H%M%S"`
-
-	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${masterLog}
-	pLog '(MASTER) ${1}'
-}
-
-pError () {
-	pMasterLog "ERROR ${1}"
-}
-
-pEnd () {
-	rm -f ${runFlagFile}
-	rmRet=$?
-
-	if [ $rmRet != 0 ]; then
-		pError "PABLO failed to remove running flag, rm returned \"$rmRet\""
-		exit 1
-	fi
-
-	finishTimeStamp=`date +%s`
-	totalExecTime=`expr $finishTimeStamp - $startTimeStamp`
-	
-	pLog "COMPLETED SUCCESSFULLY in ${totalExecTime} secs"
-}
