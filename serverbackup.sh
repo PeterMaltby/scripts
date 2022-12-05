@@ -17,6 +17,8 @@ tempPassword="fnjdhfjsdhjfdsgbfd"
 
 pStart
 
+# comment here !
+
 pLog "moving to dir \"${1}\""
 
 pwdOutput=${1}
