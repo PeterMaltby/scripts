@@ -1,6 +1,5 @@
 # .zshrc
 # created: 08-10-2022
-###################################################################
 #	 ______  _____  _    _  _____    _____ 
 #	|___  / / ____|| |  | ||  __ \  / ____|
 #	   / / | (___  | |__| || |__) || |     
@@ -8,9 +7,6 @@
 #	 / /__  ____) || |  | || | \ \ | |____ 
 #	/_____||_____/ |_|  |_||_|  \_\ \_____|
 ###################################################################
-# Update git repo for this file!
-###################################################################
-
 # Environment vars
 export S=~/scripts
 export D=~/Downloads
@@ -36,9 +32,6 @@ SAVEHIST=1000
 setopt autocd beep
 bindkey -v
 
-# not sure what this does
-# zstyle :compinstall filename '/home/peterm/.zshrc'
-
 # autocomplete
 autoload -Uz compinit
 compinit
@@ -50,8 +43,10 @@ case $host in
 'homeArch')
 	PS1='%n%B@%F{4}%m%f%b %~ %(!.#.$) '
 	neofetch --ascii_colors 4 4 --colors 4 12 13 13 13 12
+
 	;;
 'HOLBMAC2259')
+	alias ls='ls -lrth --color=auto'
 	PS1='%n%B@%F{9}%m%f%b %~ %(!.#.$) '
 	neofetch
 	;;
