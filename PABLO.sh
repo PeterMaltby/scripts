@@ -16,7 +16,7 @@ scriptName=`echo ${0##*/} | cut -d. -f1`
 # PABLO Dir todo: set perms of dir to a PABLO group
 PABLODir=~/PABLO
 # Shared Directory where files can be transfered to other PABLO enabled systems and where master logs are shared
-shareDir=~"${PABLODir}/share/"
+shareDir="${PABLODir}/share"
 # script specific directory
 baseDir="${PABLODir}/${scriptName}"
 # directory to store logs
@@ -74,16 +74,16 @@ pStart () {
 
 # create log on script log only
 pLog () {
-	dateTime=`date "+%Y%m%d %H%M%S"`
+	dateTime=`date "+%Y-%m-%d %H:%M:%S"`
 
-	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${logFile}
+	echo "${dateTime} [${timeStamp}] ${1}" >> ${logFile}
 }
 
 # will create log on script and master log
 pMasterLog () {
-	dateTime=`date "+%Y%m%d %H%M%S"`
+	dateTime=`date "+%Y-%m-%d %H:%M:%S"`
 
-	echo "${dateTime} [${timeStamp} ${scriptName}] ${1}" >> ${masterLog}
+	echo "${dateTime} [${timeStamp}] ${1}" >> ${masterLog}
 	pLog "(M) ${1}"
 }
 
