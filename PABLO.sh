@@ -26,6 +26,8 @@ logsDir="${baseDir}/logs"
 runFlagsDir="${baseDir}/flags"
 # temp dir will be removed at the end of each run
 tmpDir="${baseDir}/tmp"
+# input dir for script inputs
+inputDir="${baseDir}/input"
 
 # master log file stores logs for all scripts and are shared across machines
 masterLogDir="${shareDir}/MASTER_LOGS"
@@ -43,6 +45,7 @@ mkdir -p ${runFlagsDir}
 mkdir -p ${tmpDir}
 mkdir -p ${shareDir}
 mkdir -p ${masterLogDir}
+mkdir -p ${inputDir}
 
 # used at start of script to initiate PABLO script run
 pStart () {
