@@ -2,10 +2,11 @@
 
 source $S/PABLO.sh
 
+overunProtection=false
+
 pStart
 
 pLog "starting timer"
-pMasterLog "master start"
 
 for ((i = 0; i <= 10 ; i++))
 do
