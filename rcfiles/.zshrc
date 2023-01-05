@@ -12,7 +12,6 @@ export S=~/scripts
 export D=~/Downloads
 export DT=~/Desktop
 export G=~/gitrepos
-export L=~/logs
 
 export EDITOR=vim
 export HISTCONTROL=ignoreboth
@@ -48,6 +47,14 @@ case $host in
 'HOLBMAC2259')
 	alias ls='ls -lrth --color=auto'
 	PS1='%n%B@%F{9}%m%f%b %~ %(!.#.$) '
+ 	export GROOVY_HOME=/opt/homebrew/opt/groovy/libexec
+
+ 	alias j17="export JAVA_HOME=$(/usr/libexec/java_home -v 17.0.5) ; java -version"
+ 	alias j18="export JAVA_HOME=$(/usr/libexec/java_home -v 18.0.2.1) ; java -version"
+ 	alias j19="export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1) ; java -version"
+
+ 	defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
 	neofetch
 	;;
 *)
