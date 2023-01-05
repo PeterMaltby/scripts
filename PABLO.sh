@@ -11,6 +11,7 @@ hostName=`hostname`
 
 scriptNameFull=${0##*/}
 scriptName=`echo ${0##*/} | cut -d. -f1`
+pid=$$
 
 # PABLO Dir todo: move this somewhere more suitable withen unix.
 # PABLO Dir todo: set perms of dir to a PABLO group
@@ -33,6 +34,9 @@ masterLog="${masterLogDir}/${hostName}_${dateStamp}.log"
 # how many days to retain logs (can be overwritten)
 logRetention=30
 
+# can this script run more then once
+overunProtection=true
+
 # ensures dirs are created
 mkdir -p ${logsDir}
 mkdir -p ${runFlagsDir}
@@ -53,10 +57,10 @@ pStart () {
 		pError "START failed: name invalid \"${scriptNameFull}\}"
 		exit 1
 	fi
-
-	if test -e ${runFlagFile}; then
-		PID=`cat ${runFlagFile}`
-		pError "START failed: already running with PID \"${PID}\""
+	
+	if test -e ${runFlagFile} && ${overunProtection} ; then
+		pidFile=`cat ${runFlagFile}`
+		pError "START failed: already running with PID \"${pidFile}\""
 		exit 1
 	fi
 
@@ -68,7 +72,7 @@ pStart () {
 
 	startTimeStamp=`date +%s`
 
-	pMasterLog "START success: with PID \"$$\""
+	pMasterLog "STARTED: with PID \"${pid}\""
 
 }
 
@@ -76,15 +80,15 @@ pStart () {
 pLog () {
 	dateTime=`date "+%Y-%m-%d %H:%M:%S"`
 
-	echo "${dateTime} [${timeStamp}] ${1}" >> ${logFile}
+	echo "${dateTime} [${pid}:${scriptName}] ${1}" >> ${logFile}
 }
 
 # will create log on script and master log
 pMasterLog () {
 	dateTime=`date "+%Y-%m-%d %H:%M:%S"`
 
-	echo "${dateTime} [${timeStamp}] ${1}" >> ${masterLog}
-	pLog "(M) ${1}"
+	echo "${dateTime} [${pid}:${scriptName}] ${1}" >> ${masterLog}
+	pLog "(M)${1}"
 }
 
 # will create error log on script and master log
@@ -97,7 +101,7 @@ pEnd () {
 	rm -f ${tmpDir}/*
 	rmRet=$?
 	if [ $rmRet != 0 ]; then
-		pError "END failed: removing tmp files, rm returned \"$rmRet\""
+		pError "END FAILED: removing tmp files, rm returned \"$rmRet\""
 		exit 1
 	fi
 
@@ -105,14 +109,14 @@ pEnd () {
 	rm -f ${runFlagFile}
 	rmRet=$?
 	if [ $rmRet != 0 ]; then
-		pError "END failed: removing running flag, rm returned \"$rmRet\""
+		pError "END FAILED: removing running flag, rm returned \"$rmRet\""
 		exit 1
 	fi
 	
 	finishTimeStamp=`date +%s`
 	totalExecTime=`expr $finishTimeStamp - $startTimeStamp`
 	
-	pLog "COMPLETED SUCCESSFULLY in ${totalExecTime} secs"
+	pMasterLog "END SUCCESSFULL in ${totalExecTime} secs"
 
 	exit 0
 }
