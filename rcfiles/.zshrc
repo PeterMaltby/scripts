@@ -19,10 +19,8 @@ export HISTCONTROL=ignoreboth
 # alias scripts
 alias mv='mv -i'
 alias rm='rm -i'
-alias ls='ls -lrth --group-directories-first --color=auto'
+alias ls='ls -lrth'
 
-
-wttr() { curl wttr.in/Lincoln,+United+Kingdom }
 
 # ZSH config
 HISTFILE=~/.histfile
@@ -41,19 +39,28 @@ host=`hostname`
 case $host in
 'homeArch')
 	PS1='%n%B@%F{4}%m%f%b %~ %(!.#.$) '
-	neofetch --ascii_colors 4 4 --colors 4 12 13 13 13 12
 
+	wttr() { curl wttr.in/Lincoln,+United+Kingdom }
+	alias ls='ls -lrth --group-directories-first --color=auto'
+
+	neofetch --ascii_colors 4 4 --colors 4 12 13 13 13 12
 	;;
 'HOLBMAC2259')
-	alias ls='ls -lrth --color=auto'
 	PS1='%n%B@%F{9}%m%f%b %~ %(!.#.$) '
- 	export GROOVY_HOME=/opt/homebrew/opt/groovy/libexec
 
+	alias ls='ls -lrth --color=auto'
+	wttr() { curl wttr.in/Lincoln,+United+Kingdom }
+
+ 	export GROOVY_HOME=/opt/homebrew/opt/groovy/libexec
  	alias j17="export JAVA_HOME=$(/usr/libexec/java_home -v 17.0.5) ; java -version"
  	alias j18="export JAVA_HOME=$(/usr/libexec/java_home -v 18.0.2.1) ; java -version"
  	alias j19="export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1) ; java -version"
-
  	defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
+	neofetch
+	;;
+'dobsd')
+	PS1='%n%B@%F{3}%m%f%b %~ %(!.#.$) '
 
 	neofetch
 	;;
